@@ -6,4 +6,5 @@ that are applied to this code so don't have to make the changes
 
 # Installation
 > docker build -t testlinke .
+> 
 > docker compose up
