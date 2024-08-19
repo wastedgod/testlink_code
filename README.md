@@ -5,6 +5,6 @@ https://www.youtube.com/watch?v=UaAFPJcPEEk
 that are applied to this code so don't have to make the changes
 
 # Installation
-> docker build -t testlinke .
+> docker build -t testlink .
 > 
 > docker compose up
