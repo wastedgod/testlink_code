@@ -553,21 +553,25 @@ function _mysql_make_user($dbhandler,$db_host,$db_name,$login,$passwd) {
 function _mysql_assign_grants($dbhandler,$db_host,$db_name,$login,$passwd) {
 
   $op->status_ok = true;
-  $op->msg = 'ok - new user';     
+  $op->msg = 'ok - new user';
+  $db_host = '%';  
 
   // Escaping following rules form:
   //
   // MySQL Manual
   // 9.2. Database, Table, Index, Column, and Alias Names
   //
-  $safeDBHost = $dbhandler->prepare_string($db_host);
+  $safeDBHost = '%'; //$dbhandler->prepare_string($db_host);
   $safeDBName = $dbhandler->prepare_string($db_name);
   $safeLogin = $dbhandler->prepare_string($login);
-
+/*
   $stmt = "GRANT SELECT, UPDATE, DELETE, INSERT ON 
-           `$safeDBName`.* TO '$safeLogin'@'$safeDBHost' 
+           `$safeDBName`.* TO '$safeLogin'@'%'
             WITH GRANT OPTION ";
-
+*/
+	$stmt = "GRANT SELECT, UPDATE, DELETE, INSERT ON 
+		   `$safeDBName`.* TO '$safeLogin'@'%'
+			WITH GRANT OPTION ";
   if ( !@$dbhandler->exec_query($stmt) ) {
     $op->msg = "ko - " . $dbhandler->error_msg();
     $op->status_ok=false;
@@ -584,10 +588,14 @@ function _mysql_assign_grants($dbhandler,$db_host,$db_name,$login,$passwd) {
   //
   //
   if( strcasecmp('localhost',$db_host) != 0 ) {
+	  /*
     $stmt = "GRANT SELECT, UPDATE, DELETE, INSERT ON 
-            `$safeDBName`.* TO '$safeLogin'@'localhost' 
+            `$safeDBName`.* TO '$safeLogin'@'%' 
             WITH GRANT OPTION ";
-
+			*/
+	$stmt = "GRANT SELECT, UPDATE, DELETE, INSERT ON 
+            `$safeDBName`.* TO '$safeLogin'@'%' 
+            WITH GRANT OPTION ";
     if ( !@$dbhandler->exec_query($stmt) ) {
       $op->msg = "ko - " . $dbhandler->error_msg();
       $op->status_ok=false;
